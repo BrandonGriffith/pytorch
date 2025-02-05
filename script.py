@@ -10,6 +10,8 @@ if torch.cuda.is_available():
     print(z)
     z = z.to("cpu")
     print(z)
+    a = z.numpy()
+    print("numpy",a)
 
-a = z.numpy()
-print("numpy",a)
+else:
+    print("cuda not available")
