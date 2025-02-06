@@ -18,16 +18,16 @@ def main():
     3. If CUDA is not available, prints a message indicating that CUDA is not available.
     """
     if torch.cuda.is_available():
-        device = torch.device("cuda")
-        x = torch.ones(2, 2, device=device)
-        y = torch.ones(2, 2)
+        device: torch.device = torch.device("cuda")
+        x: torch.Tensor = torch.ones(2, 2, device=device)
+        y: torch.Tensor = torch.ones(2, 2)
         y = y.to(device)
-        z = x + y
+        z: torch.Tensor = x + y
         print(z)
         z = z.to("cpu")
         print(z)
-        a = z.numpy()
-        print("numpy",a)
+        a: np.ndarray = z.numpy()
+        print("numpy", a)
 
     else:
         print("cuda not available")
