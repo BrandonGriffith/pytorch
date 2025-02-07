@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 
+
 def main():
     """
     Main function to demonstrate basic tensor operations using PyTorch with CUDA support.
@@ -43,6 +44,7 @@ def main():
         # If CUDA is not available
         print("cuda not available")
         # Print a message indicating that CUDA is not available
+
 
 if __name__ == "__main__":
     main()
