@@ -2,50 +2,41 @@ import torch
 import numpy as np
 
 
+def get_device() -> torch.device:
+    """Return the best available device."""
+    return torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
 def main():
     """
-    Main function to demonstrate basic tensor operations using PyTorch with CUDA support.
-    This function performs the following steps:
-    1. Checks if CUDA is available.
-    2. If CUDA is available:
-        - Sets the device to CUDA.
-        - Creates a tensor `x` with ones on the CUDA device.
-        - Creates a tensor `y` with ones on the CPU and transfers it to the CUDA device.
-        - Adds tensors `x` and `y` to get tensor `z`.
-        - Prints tensor `z` on the CUDA device.
-        - Transfers tensor `z` back to the CPU.
-        - Prints tensor `z` on the CPU.
-        - Converts tensor `z` to a NumPy array `a` and prints it.
-    3. If CUDA is not available, prints a message indicating that CUDA is not available.
+    Demonstrates basic tensor operations using PyTorch with device support.
+    The function:
+    1. Determines the best device to use.
+    2. Creates tensors directly on the target device.
+    3. Calculates a sum of tensors.
+    4. Transfers tensor data back to CPU if needed.
+    5. Converts the final result into a NumPy array.
     """
-    if torch.cuda.is_available():
-        # Check if CUDA is available
-        device: torch.device = torch.device("cuda")
-        # Set the device to CUDA
-        x: torch.Tensor = torch.ones(2, 2, device=device)
-        # Create a tensor `x` with ones on the CUDA device
-        y: torch.Tensor = torch.ones(2, 2)
-        # Create a tensor `y` with ones on the CPU
-        y = y.to(device)
-        # Transfer tensor `y` to the CUDA device
-        z: torch.Tensor = x + y
-        # Add tensors `x` and `y` to get tensor `z`
-        print(z)
-        # Print tensor `z` on the CUDA device
-        z = z.to("cpu")
-        # Transfer tensor `z` back to the CPU
-        print(z)
-        # Print tensor `z` on the CPU
-        a: np.ndarray = z.numpy()
-        # Convert tensor `z` to a NumPy array `a`
-        print("numpy", a)
-        # Print the NumPy array `a`
-    else:
-        # If CUDA is not available
-        print("cuda not available")
-        # Print a message indicating that CUDA is not available
+    device: torch.device = get_device()
+    print(f"Using device: {device}")
 
+    # Create tensors directly on the chosen device.
+    x: torch.Tensor = torch.ones(2, 2, device=device)
+    y: torch.Tensor = torch.ones(2, 2, device=device)
+    z: torch.Tensor = x + y
+    print(f"Tensor z on {device}:")
+    print(z)
+
+    # If using CUDA, transfer result back to CPU for NumPy conversion.
+    if device.type == "cuda":
+        z = z.to("cpu")
+        print("Tensor z on CPU:")
+        print(z)
+
+    # Convert tensor to NumPy array and display.
+    a: np.ndarray = z.numpy()
+    print("Converted to NumPy array:")
+    print(a)
 
 if __name__ == "__main__":
     main()
-    # Call the main function if this script is executed
